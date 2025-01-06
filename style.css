@@ -1,44 +1,60 @@
-const cacheName = 'calculator-v1';
-const filesToCache = [
-    '/',
-    '/index.html',
-    '/styles.css',
-    '/script.js',
-    '/manifest.json',
-    '/icons/icon-192x192.png',
-    '/icons/icon-512x512.png'
-];
+body {
+  font-family: system-ui;
+  background: #f06d06;
+  color: white;
+  text-align: center;
+}* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-// インストール時にキャッシュするファイルを指定
-self.addEventListener('install', (event) => {
-    event.waitUntil(
-        caches.open(cacheName).then((cache) => {
-            return cache.addAll(filesToCache);
-        })
-    );
-});
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f9;
+}
 
-// ネットワークのフェッチリクエストをキャッシュで対応
-self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        caches.match(event.request).then((cachedResponse) => {
-            return cachedResponse || fetch(event.request);
-        })
-    );
-});
+.calculator {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
-// サービスワーカーの更新時に古いキャッシュを削除
-self.addEventListener('activate', (event) => {
-    const cacheWhitelist = [cacheName];
-    event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames.map((cache) => {
-                    if (!cacheWhitelist.includes(cache)) {
-                        return caches.delete(cache);
-                    }
-                })
-            );
-        })
-    );
-});
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 2em;
+    text-align: right;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+button {
+    padding: 20px;
+    font-size: 1.5em;
+    border: none;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #ddd;
+}
+
+button:active {
+    background-color: #ccc;
+}
